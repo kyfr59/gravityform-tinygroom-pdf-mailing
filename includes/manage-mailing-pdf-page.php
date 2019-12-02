@@ -74,7 +74,7 @@ function publipostage_export_page() {
         gfSpinner.destroy();
 
         if (aryFields.length == 0) {
-          jQuery("#export_field_container, #export_date_container, #export_submit_container, #export_first_tag_position").hide()
+          jQuery("#export_field_container, #export_date_container, #export_submit_container, #export_first_tag_position, #export_page_format").hide()
           return;
         }
 
@@ -125,7 +125,7 @@ function publipostage_export_page() {
         jQuery("#export_field_list").html(fieldList);
         jQuery("#export_date_start, #export_date_end").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
 
-        jQuery("#export_field_container, #export_filter_container, #export_date_container, #export_submit_container, #export_first_tag_position").hide().show();
+        jQuery("#export_field_container, #export_filter_container, #export_date_container, #export_submit_container, #export_first_tag_position, #export_page_format").hide().show();
 
         gf_vars.filterAndAny = <?php echo json_encode( esc_html__( 'Export entries if {0} of the following match:', 'gravityforms' ) ); ?>;
         jQuery("#export_filters").gfFilterUI(filterSettings);
@@ -230,6 +230,24 @@ function publipostage_export_page() {
           </th>
           <td><input style="width:35px;" type="text" name="first_tag_position" value="1" /></td>
         </tr>
+
+        <tr id="export_page_format" valign="top" style="display: none;">
+          <th scope="row">
+            <label for="export_date">Position de la première étiquette sur la planche</label>
+          </th>
+          <td>
+            <table>
+              <tr><td style="padding:0;">Marge de gauche :&nbsp;</td><td style="padding:0;"><input name="marginLeft" type="text" style="width:35px;" value="3"> centimètres</td></tr>
+              <tr><td style="padding:0;">Marge du haut :&nbsp;</td><td style="padding:0;"><input name="marginTop" type="text" style="width:35px;" value="2"> centimètres</td></tr>
+              <tr><td style="padding:0;">Marge à droite des étiquettes :&nbsp;</td><td style="padding:0;"><input name="SpaceX" type="text" style="width:35px;" value="0.5"> centimètres</td></tr>
+              <tr><td style="padding:0;">Marge à gauche des étiquettes  :&nbsp;</td><td style="padding:0;"><input name="SpaceY" type="text" style="width:35px;" value="1"> centimètres</td></tr>
+              <tr><td style="padding:0;">Largeur des étiquettes  :&nbsp; </td><td style="padding:0;"><input name="width" type="text" style="width:35px;" value="68"> centimètres</td></tr>
+              <tr><td style="padding:0;">Hauteur des étiquettes  :&nbsp; </td><td style="padding:0;"><input name="height" type="text" style="width:35px;"  value="36"> centimètres</td></tr>
+              <tr><td style="padding:0;">Taille de la police  :&nbsp;</td><td style="padding:0;"><input name="fontSize" type="text" style="width:35px;" value="10"> pixels</td></tr>
+            </table>
+          </td>
+        </tr>
+
       </table>
       <ul>
         <li id="export_submit_container" style="display:none; clear:both;">

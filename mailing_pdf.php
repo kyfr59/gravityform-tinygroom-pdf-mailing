@@ -71,13 +71,13 @@ foreach($positions as $key => $orders) {
 
 
 // Mailing format params
-$marginLeft = 3;
-$marginTop  = 2;
-$SpaceX     = 0.5;
-$SpaceY     = 1;
-$width      = 68;
-$height     = 36;
-$fontSize   = 10;
+$marginLeft = !empty($_POST['marginLeft']) ? $_POST['marginLeft'] : 3;
+$marginTop  = !empty($_POST['marginTop']) ? $_POST['marginTop'] : 2;
+$SpaceX     = !empty($_POST['SpaceX']) ? $_POST['SpaceX'] : 0.5;
+$SpaceY     = !empty($_POST['SpaceY']) ? $_POST['SpaceY'] : 1;
+$width      = !empty($_POST['width']) ? $_POST['width'] : 68;
+$height     = !empty($_POST['height']) ? $_POST['height'] : 36;
+$fontSize   = !empty($_POST['fontSize']) ? $_POST['fontSize'] :  10;
 
 // Prepare mailing
 $pdf = new PDF_Label(array('paper-size'=>'A4', 'metric'=>'mm', 'marginLeft'=>$marginLeft, 'marginTop'=>$marginTop, 'NX'=>3, 'NY'=>8, 'SpaceX'=>$SpaceX, 'SpaceY'=>$SpaceY, 'width'=>$width, 'height'=>$height, 'font-size'=>$fontSize));
