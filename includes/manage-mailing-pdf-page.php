@@ -74,7 +74,7 @@ function publipostage_export_page() {
         gfSpinner.destroy();
 
         if (aryFields.length == 0) {
-          jQuery("#export_field_container, #export_date_container, #export_submit_container").hide()
+          jQuery("#export_field_container, #export_date_container, #export_submit_container, #export_first_tag_position").hide()
           return;
         }
 
@@ -87,7 +87,7 @@ function publipostage_export_page() {
         jQuery("#export_field_list").html(fieldList);
         jQuery("#export_date_start, #export_date_end").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
 
-        jQuery("#export_field_container, #export_filter_container, #export_date_container, #export_submit_container").hide().show();
+        jQuery("#export_field_container, #export_filter_container, #export_date_container, #export_submit_container, #export_first_tag_position").hide().show();
 
         gf_vars.filterAndAny = <?php echo json_encode( esc_html__( 'Export entries if {0} of the following match:', 'gravityforms' ) ); ?>;
         jQuery("#export_filters").gfFilterUI(filterSettings);
@@ -184,6 +184,13 @@ function publipostage_export_page() {
               <?php esc_html_e( 'Date Range is optional, if no date range is selected all entries will be exported.', 'gravityforms' ); ?>
             </div>
           </td>
+        </tr>
+
+        <tr id="export_first_tag_position" valign="top" style="display: none;">
+          <th scope="row">
+            <label for="export_date">Position de la première étiquette sur la planche</label>
+          </th>
+          <td><input style="width:35px;" type="text" name="first_tag_position" value="1" /></td>
         </tr>
       </table>
       <ul>

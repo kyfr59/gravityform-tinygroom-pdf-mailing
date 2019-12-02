@@ -25,6 +25,13 @@ $form    = RGFormsModel::get_form_meta( $form_id );
 $search_criteria['field_filters'] = GFCommon::get_field_filters_from_post( $form );
 
 
+// Handle tag position on page
+if (empty( $_POST['first_tag_position'])) {
+    $first_tag_position = 1;
+} else {
+    $first_tag_position = $_POST['first_tag_position'];
+}
+
 // Handle sorting
 $sorting = array( 'key' => 'id', 'direction' => 'DESC', 'type' => 'info' );
 
@@ -65,6 +72,11 @@ $fontSize   = 10;
 // Prepare mailing
 $pdf = new PDF_Label(array('paper-size'=>'A4', 'metric'=>'mm', 'marginLeft'=>$marginLeft, 'marginTop'=>$marginTop, 'NX'=>3, 'NY'=>8, 'SpaceX'=>$SpaceX, 'SpaceY'=>$SpaceY, 'width'=>$width, 'height'=>$height, 'font-size'=>$fontSize));
 $pdf->AddPage();
+
+// Add potentials blanks tags
+for($i = 1; $i < $first_tag_position ; $i++) {
+    $pdf->Add_Label("");
+}
 
 // Generate labels
 foreach($entries as $entry) {
