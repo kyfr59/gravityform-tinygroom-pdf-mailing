@@ -9,6 +9,16 @@ if(!current_user_can('administrator') && !current_user_can('author')) {
 }
 require_once (__DIR__ . '/includes/fpdf/fpdf_label.php');
 
+// Save form configuration in database
+$wpdb->delete( $wpdb->prefix . "gf_tinygroom_pdf_mailing", array( 'form_id' => $_POST['export_form'] ) );
+$wpdb->insert(
+    $wpdb->prefix . "gf_tinygroom_pdf_mailing",
+    array(
+        'form_id' => $_POST['export_form'],
+        'post_values' => serialize($_POST)
+    )
+);
+
 // Retrieve form criterias
 if ( ! empty( $_POST['export_date_start'] ) ) {
     $search_criteria['start_date'] = $_POST['export_date_start'];

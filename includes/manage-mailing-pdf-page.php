@@ -21,30 +21,28 @@ function publipostage_export_page() {
 
     GFExport::page_header( __( 'Export Entries', 'gravityforms' ) );
 
-        $choices = [];
-        $choices['1_1'] = 'Ligne 1 - pos 1';
-        $choices['1_2'] = 'Ligne 1 - pos 2';
-        $choices['1_3'] = 'Ligne 1 - pos 3';
-        $choices['2_1'] = 'Ligne 2 - pos 1';
-        $choices['2_2'] = 'Ligne 2 - pos 2';
-        $choices['2_3'] = 'Ligne 2 - pos 3';
-        $choices['3_1'] = 'Ligne 3 - pos 1';
-        $choices['3_2'] = 'Ligne 3 - pos 2';
-        $choices['3_3'] = 'Ligne 3 - pos 3';
-        $choices['4_1'] = 'Ligne 4 - pos 1';
-        $choices['4_2'] = 'Ligne 4 - pos 2';
-        $choices['4_3'] = 'Ligne 4 - pos 3';
+        // Retrieve forms preselections from database
+        global $wpdb;
+        $table_name = $wpdb->prefix . "gf_tinygroom_pdf_mailing";
+        $forms_config_results = $wpdb->get_results( "SELECT * FROM $table_name" );
 
-        $options = "<option value=''></option>";
-        foreach ($choices as $key => $choice) {
-          $options .= '<option value="'.$key.'">'.$choice.'</option>';
+        foreach($forms_config_results as $form_config) {
+          $post_values = unserialize($form_config->post_values);
+          foreach($post_values as $key => $value) {
+            if (strpos($key, 'export_field_') === 0 && !empty($value)) {
+              $k = str_replace('_', '.', $key);
+              $k = str_replace('export.field.', 'export_field_', $k);
+              $selected[$form_config->form_id][$k] = $value;
+            }
+          }
         }
 
     ?>
-
     <script type="text/javascript">
 
       var gfSpinner;
+      var currentFormId;
+      var selected = <?php echo @json_encode($selected) ?>;
 
       <?php GFCommon::gf_global(); ?>
       <?php GFCommon::gf_vars(); ?>
@@ -53,6 +51,8 @@ function publipostage_export_page() {
 
         if (!formId)
           return;
+
+        currentFormId = formId;
 
         gfSpinner = new gfAjaxSpinner(jQuery('select#export_form'), gf_vars.baseUrl + '/images/spinner.gif', 'position: relative; top: 2px; left: 5px;');
 
@@ -81,8 +81,46 @@ function publipostage_export_page() {
         var fieldList = "";
         for (var i = 0; i < aryFields.length; i++) {
           var meta_key = aryFields[i][0];
-          console.log(meta_key);
-          fieldList += "<li><select id='export_field_" + meta_key + "' name='export_field_" + meta_key + "' ><?php echo addslashes($options) ?></select>&nbsp;&nbsp;<label for='export_field_" + meta_key + "'>" + aryFields[i][1] + "</label></li>";
+
+          fieldList += "<li><select id='export_field_" + meta_key + "' name='export_field_" + meta_key + "' >';";
+          fieldList += "<option value=''></option>";
+          fieldList += "<option value='1_1' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '1_1') fieldList += " selected='selected'" ;
+          fieldList += " >Ligne 1 - pos 1</option>";
+          fieldList += "<option value='1_2' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '1_2') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 1 - pos 2</option>";
+          fieldList += "<option value='1_3' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '1_3') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 1 - pos 3</option>";
+          fieldList += "<option value='2_1' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '2_1') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 2 - pos 1</option>";
+          fieldList += "<option value='2_2' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '2_2') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 2 - pos 2</option>";
+          fieldList += "<option value='2_3' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '2_3') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 2 - pos 3</option>";
+          fieldList += "<option value='3_1' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '3_1') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 3 - pos 1</option>";
+          fieldList += "<option value='3_2' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '3_2') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 3 - pos 2</option>";
+          fieldList += "<option value='3_3' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '3_3') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 3 - pos 3</option>";
+          fieldList += "<option value='4_1' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '4_1') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 4 - pos 1</option>";
+          fieldList += "<option value='4_2' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '4_2') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 4 - pos 2</option>";
+          fieldList += "<option value='4_3' ";
+          if(selected[currentFormId]['export_field_' + meta_key] == '4_3') fieldList += " selected='selected'" ;
+          fieldList += ">Ligne 4 - pos 3</option>";
+          fieldList += "</select>&nbsp;&nbsp;<label for='export_field_" + meta_key + "'>" + aryFields[i][1] + "</label></li>";
         }
         jQuery("#export_field_list").html(fieldList);
         jQuery("#export_date_start, #export_date_end").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
