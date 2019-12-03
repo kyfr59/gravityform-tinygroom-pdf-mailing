@@ -233,7 +233,7 @@ function publipostage_export_page() {
 
         <tr id="export_page_format" valign="top" style="display: none;">
           <th scope="row">
-            <label for="export_date">Position de la première étiquette sur la planche</label>
+            <label for="export_date">Réglage des marges de la planche</label>
           </th>
           <td>
             <table>
