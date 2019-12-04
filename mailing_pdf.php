@@ -47,7 +47,7 @@ $sorting = array( 'key' => 'id', 'direction' => 'DESC', 'type' => 'info' );
 
 
 // Get entries
-$entries = GFAPI::get_entries( $form_id, $search_criteria, $sorting);
+$entries = GFAPI::get_entries( $form_id, $search_criteria, $sorting, ['page_size' => PHP_INT_MAX]);
 
 // Handle choosen position from form
 $positions = [];
